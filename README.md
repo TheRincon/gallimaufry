@@ -79,7 +79,7 @@ Vertical gradient image:
 python3 colorer.py --mode v -c 255,211,0 -k 255,0,107 --height 400 --width 300 -o output/yellow_pink.png
 ```
 
-![](output/yellow_pink.png)
+![](output/gradient.png)
 
 Concatenate images horizontally:
 
