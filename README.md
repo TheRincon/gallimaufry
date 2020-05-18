@@ -76,7 +76,7 @@ python3 colorer.py --mode s -c 64,255,183 -o sample.png --height 1200 --width 30
 Vertical gradient image:
 
 ```bash
-python3 colorer.py --mode v -c 255,211,0 -k 255,0,107 --height 1200 --width 300 -o output/yellow_pink.png
+python3 colorer.py --mode v -c 255,211,0 -k 255,0,107 --height 400 --width 300 -o output/yellow_pink.png
 ```
 
 ![](output/yellow_pink.png)
