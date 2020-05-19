@@ -63,8 +63,8 @@ Relies on [Pillow](https://github.com/fogleman/primitive)
 ### Usage
 
 ```bash
-# mode: 0=combo, 1=triangle, 2=rect, 3=ellipse, 4=circle, 5=rotatedrect, 6=beziers, 7=rotatedellipse, 8=polygon
-python3 colorer.py [-i image_path] [-o outout_path] [-n number_of_shapes] [-m mode]
+# mode: v = vertical gradient, h = horizontal gradient, ch = concatenate horizontally, cv = concatenate vertically, s = solid color, r = rainbow gradient
+python3 colorer.py [--mode]
 ```
 
 Solid color image:
@@ -73,10 +73,12 @@ Solid color image:
 python3 colorer.py --mode s -c 64,255,183 -o sample.png --height 1200 --width 300
 ```
 
+![](output/light_teal.png)
+
 Vertical gradient image:
 
 ```bash
-python3 colorer.py --mode v -c 255,211,0 -k 255,0,107 --height 400 --width 300 -o output/yellow_pink.png
+python3 colorer.py --mode v -c 255,211,0 -k 255,0,107 --height 400 --width 300 -o output/gradient.png
 ```
 
 ![](output/gradient.png)
@@ -84,5 +86,7 @@ python3 colorer.py --mode v -c 255,211,0 -k 255,0,107 --height 400 --width 300 -
 Concatenate images horizontally:
 
 ```bash
-python3 colorer.py --mode ch -i con.png -e con.png -o con2.png --height 1200 --width 300
+python3 colorer.py --mode ch -i output/gradient.png -e output/light_teal.png -o output/concatenated.png --height 400 --width 300
 ```
+
+![](output/concatenated.png)
