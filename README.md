@@ -64,7 +64,9 @@ Relies on [Pillow](https://github.com/fogleman/primitive)
 
 ```bash
 # mode: v = vertical gradient, h = horizontal gradient, ch = concatenate horizontally, cv = concatenate vertically, s = solid color, r = rainbow gradient
-python3 colorer.py [--mode]
+# two colors only needed for gradient modes v and h, input images only needed for concatenation modes ch and cv
+# solid color image needs one color obviously
+python3 colorer.py [--mode] [-i first_input_image] [-e second_input_image] [-o output_image] [--height] [--width] [-c first_color] [-k second_color]
 ```
 
 Solid color image:
