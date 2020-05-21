@@ -3,7 +3,7 @@
 Assortment of useful (to me anyway) scripts and commands
 
 
-## information_source generate_primitive_gif.py
+## generate_primitive_gif.py
 
 Relies on [Primitive](https://github.com/fogleman/primitive), used to make "images come to life".
 
@@ -35,15 +35,11 @@ primitive -i input_file -o output_file -n number_of_shapes -m mode
 
 ![](output/redstart.gif)
 
-[Creative Commons License](https://creativecommons.org/licenses/by/2.0/deed.en)
-
-4 April 2017, 15:33
-
-[Painted Redstart](https://commons.wikimedia.org/wiki/File:Painted_Redstart_(33899681692).jpg)
-
-Andy Reago & Chrissy McClarren
-
-Modified with primitive, by Rincon Rex
+[Creative Commons License](https://creativecommons.org/licenses/by/2.0/deed.en) </br>
+4 April 2017, 15:33 </br>
+[Painted Redstart](https://commons.wikimedia.org/wiki/File:Painted_Redstart_(33899681692).jpg) </br>
+Andy Reago & Chrissy McClarren </br>
+Modified with primitive, by Rincon Rex </br>
 
 "Shimmering" GIF:
 
@@ -55,7 +51,7 @@ Modified with primitive, by Rincon Rex
 
 
 
-## information_source colorer.py
+## colorer.py
 
 Relies on [Pillow](https://github.com/fogleman/primitive)
 
