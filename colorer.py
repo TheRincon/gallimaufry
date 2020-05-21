@@ -1,6 +1,6 @@
 import png
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageDraw
 import subprocess
 import argparse
 import matplotlib
@@ -28,6 +28,14 @@ def rgb_to_hex(rgbcolor):
     blue = colors[2]
     return '#%02x%02x%02x' % (red, green, blue)
 
+def resizer(input_path, height, width, output_path):
+    old_im = Image.open(input_path)
+    old_size = old_im.size
+    new_size = (height, width)
+    new_im = Image.new("RGB", new_size)
+    new_im.paste(old_im, ((new_size[0]-old_size[0])/2, (new_size[1]-old_size[1])/2))
+    new_im.save('someimage.jpg')
+
 # rainbow gradient
 # height and width must be 255 for rgb 255
 def rainbow_gradient(output_path):
@@ -36,8 +44,6 @@ def rainbow_gradient(output_path):
         for x in range(255):
             row = row + (x, max(0, 255 - x - y), y)
         img.append(row)
-    im = Image.fromarray(img)
-    im.save(output_path)
     # with open(output_path, 'wb') as f:
     #     w = png.Writer(255, 255, greyscale=False)
     #     w.write(f, img)
@@ -62,6 +68,10 @@ def solid_color(height, width, solid_color, output_path):
         w = png.Writer(width, height, greyscale=False)
         w.write(f, img)
 
+def solid_color_new(height, width, solid_color, output_path):
+    im = Image.new('RGB', (width, height), solid_color)
+    im.save(output_path)
+
 def horizontal_gradient(height, width, gradient_width_r_range, gradient_width_g_range, gradient_width_b_range, output_path):
     for y in range(height):
         h_row = ()
@@ -72,6 +82,7 @@ def horizontal_gradient(height, width, gradient_width_r_range, gradient_width_g_
         w = png.Writer(width, height, greyscale=False)
         w.write(f, img)
 
+# https://note.nkmk.me/en/python-pillow-concat-images/
 def concat_h(im1, im2, output_path):
     dst = Image.new('RGB', (im1.width + im2.width, im1.height))
     dst.paste(im1, (0, 0))
@@ -83,6 +94,25 @@ def concat_v(im1, im2, output_path):
     dst.paste(im1, (0, 0))
     dst.paste(im2, (0, im1.height))
     dst.save(output_path)
+
+
+# Not my own code here
+# https://gist.github.com/weihanglo/1e754ec47fdd683a42fdf6a272904535
+def interpolate(color1, color2, interval):
+    det_co =[(t - f) / interval for f , t in zip(color1, color2)]
+    for i in range(interval):
+        yield [round(f + det * i) for f, det in zip(color1, det_co)]
+
+def diagonal_gradient_new(height, width, color1, color2, output_path):
+    gradient = Image.new('RGBA', (height, width), color=0)
+    draw = ImageDraw.Draw(gradient)
+
+    length_gradient = width if width >= height else height
+
+    for i, color in enumerate(interpolate(color1, color2, length_gradient * 2)):
+        draw.line([(i, 0), (0, i)], tuple(color), width=1)
+
+    gradient.save(output_path)
 
 # need to extend color gradient
 def diagonal_gradient():
@@ -171,11 +201,16 @@ if __name__ == '__main__':
     elif mode == 's':
         solid_color(options.height, options.width, options.first_color, options.output_path)
 
+    elif mode == 'sn':
+        solid_color_new(options.height, options.width, options.first_color, options.output_path)
+
+    elif mode == 'd':
+        diagonal_gradient_new(options.height, options.width, options.first_color, options.second_color, options.output_path)
+
     else:
-        raise ValueError('mode not recongnized')
+        raise ValueError('mode not recognized')
 
 
     # extended_gradient_r_range = np.linspace(rgb_1[0], rgb_2[0], height * 2, dtype = int)
     # extended_gradient_g_range = np.linspace(rgb_1[1], rgb_2[1], height * 2, dtype = int)
     # extended_gradient_b_range = np.linspace(rgb_1[2], rgb_2[2], height * 2, dtype = int)
-
