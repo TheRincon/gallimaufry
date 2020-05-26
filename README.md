@@ -92,3 +92,23 @@ python3 colorer.py --mode ch -i output/gradient.png -e output/light_teal.png -o 
 ```
 
 ![](output/concatenated.png)
+
+## consumer_reports_plot
+
+### Usage
+
+```python
+
+from consumer_reports_plot import cr_plot
+
+cars = ['Toyota Corrola', 'Toyota Camry', 'Toyota Prius']
+years = [2015, 2016, 2017, 2018, 2019, 2020]
+samps = np.array([[0, 0, 5000, 7000, 10000, 12000],
+                [0, 0, 0, 5000, 7000, 10000],
+                [7000, 9000, 11000, 13000, 15000, 16000]]
+            )
+output_path = 'car_tester.png'
+cr_plot(samps, cars, years, output_path)
+```
+
+![](output/car_tester.png)
