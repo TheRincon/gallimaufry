@@ -95,11 +95,14 @@ python3 colorer.py --mode ch -i output/gradient.png -e output/light_teal.png -o 
 
 ## consumer_reports_plot
 
+Small plotter dependent on matplotlib, uses numpy, but can easily be modified. Dataframes will also be available next update. 1 row heatmaps are not super useful, but it's there when needed.
+
 ### Usage
 
 ```python
 
 from consumer_reports_plot import cr_plot
+# cr_plot(data, row_labels, column_labels, output_path, default_val=0, width=15, colormap=None, graph_aspect=0.15)
 
 cars = ['Toyota Corrola', 'Toyota Camry', 'Toyota Prius']
 years = [2015, 2016, 2017, 2018, 2019, 2020]
@@ -111,4 +114,5 @@ output_path = 'car_tester.png'
 cr_plot(samps, cars, years, output_path)
 ```
 
+### Plot:
 ![](output/car_tester.png)

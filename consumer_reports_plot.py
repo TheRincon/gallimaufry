@@ -1,8 +1,7 @@
 import matplotlib
 import matplotlib.pyplot as plt
-import numpy as np; np.random.seed(0)
-import seaborn as sns; sns.set()
-import matplotlib.transforms as mtrans
+import numpy as np
+import seaborn as sns; sns.set() # comment this out for borders on plot
 
 plt.rcParams["axes.grid"] = False
 
