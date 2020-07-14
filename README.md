@@ -93,7 +93,7 @@ python3 colorer.py --mode ch -i output/gradient.png -e output/light_teal.png -o 
 
 ![](output/concatenated.png)
 
-## consumer_reports_plot
+## consumer_reports_plot.py
 
 Small plotter dependent on matplotlib, uses numpy, but can easily be modified. Dataframes will also be available next update. 1 row heatmaps are not super useful, but it's there when needed.
 
