@@ -119,13 +119,15 @@ cr_plot(samps, cars, years, 'car_tester.png', colormap='viridis', title='Used \ 
 
 ## pair_dot_plot.py
 
-Takes dataframe of magnitude normalized numeric data.
+Takes dataframe of magnitude normalized numeric data. © 2018 Aaron Penne is the original author.
+
+[Original code](https://github.com/aaronpenne/data_visualization#annual-company-revenue-vs-annual-ceo-compensation)
 
 ### Usage
 
-Data Sources:
-[Highest Paid CEOs](https://aflcio.org/paywatch/highest-paid-ceos)
-[Company Worker-to-pay-ratios](https://aflcio.org/paywatch/company-pay-ratios)
+Data Sources: </br>
+[Highest Paid CEOs](https://aflcio.org/paywatch/highest-paid-ceos) </br>
+[Company Worker-to-pay-ratios](https://aflcio.org/paywatch/company-pay-ratios) </br>
 
 ```python
 
@@ -168,7 +170,14 @@ bar_width = 0.5
 bar_coordinates = [1, 2]
 colors = ['#FC8D62','#65C2A5']
 data = [np.random.random(30) * 2 + 5, np.random.random(10) * 3 + 8]
-bdp.bar_and_data_plot(bar_coordinates, data, 'bar_points.png', bar_width=bar_width, bar_colors=colors, edge_colors=None)
+bdp.bar_and_data_plot(
+  bar_coordinates,
+  data,
+  'bar_points.png',
+  tick_labels=tick_labels,
+  bar_width=bar_width,
+  bar_colors=colors
+)
 ```
 
 ### Plot:
