@@ -95,10 +95,8 @@ python3 colorer.py --mode ch -i output/gradient.png -e output/light_teal.png -o 
 Make a solid color border:
 
 ```bash
-python3 colorer.py --mode v -c 255,211,0 -k 255,0,107 --height 400 --width 300 -o gradient.png
-python3 colorer.py --mode ub -i output/gradient.png -b 30 -c 0,0,0 -o output_border.png --height 400 --width 300
+python3 colorer.py --mode ub -i output/gradient.png -b 30 -c 64,255,183 -o output_border.png --height 400 --width 300
 ```
-![](output/gradient.png)
 
 ![](output/output_border.png)
 
