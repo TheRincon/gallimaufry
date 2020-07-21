@@ -21,7 +21,15 @@ def make_new_df(df):
     df2['original_index'] = None
     return df2
 
-def dot_pair_plot(df, title, first_label, second_label):
+def dot_pair_plot(
+        df,
+        title,
+        first_label,
+        second_label,
+        color_one='#FC8D62',
+        color_two='#65C2A5'
+    ):
+
     df2 = make_new_df(df)
     fig, ax = plt.subplots(figsize=(8, 6), dpi=150)
     for i in df.index:
@@ -33,17 +41,17 @@ def dot_pair_plot(df, title, first_label, second_label):
                  linewidth=1)
 
         if (abs(x[0] - x[1]) < 1.0):
-            plt.text(x[0]+4, y[0], df.iloc[i, 2], horizontalalignment='left', verticalalignment='center', weight='bold')
-            plt.text(x[1]-4, y[1], df.iloc[i, 3], horizontalalignment='right', verticalalignment='center')
+            plt.text(x[0]+4, y[0], df.iloc[i, 2] + ' ({})'.format(df.iloc[i, 0]), horizontalalignment='left', verticalalignment='center', weight='bold')
+            plt.text(x[1]-4, y[1], df.iloc[i, 3] + ' ({})'.format(df.iloc[i, 1]), horizontalalignment='right', verticalalignment='center')
             df2.loc[df.index[i]] = df.iloc[i]
             df2.loc[df.index[i], 'original_index'] = i
             df = df.drop(df.index[[i]])
         elif x[0] > x[1]:
-            plt.text(x[0]+4, y[0], df.iloc[i, 2], horizontalalignment='left', verticalalignment='center', weight='bold')
-            plt.text(x[1]-4, y[1], df.iloc[i, 3], horizontalalignment='right', verticalalignment='center')
+            plt.text(x[0]+4, y[0], df.iloc[i, 2] + ' ({})'.format(df.iloc[i, 0]), horizontalalignment='left', verticalalignment='center', weight='bold')
+            plt.text(x[1]-4, y[1], df.iloc[i, 3] + ' ({})'.format(df.iloc[i, 1]), horizontalalignment='right', verticalalignment='center')
         else:
-            plt.text(x[0]-4, y[0], df.iloc[i, 2], horizontalalignment='right', verticalalignment='center', weight='bold')
-            plt.text(x[1]+4, y[1], df.iloc[i, 3], horizontalalignment='left', verticalalignment='center')
+            plt.text(x[0]-4, y[0], df.iloc[i, 2]  + ' ({})'.format(df.iloc[i, 0]), horizontalalignment='right', verticalalignment='center', weight='bold')
+            plt.text(x[1]+4, y[1], df.iloc[i, 3]  + ' ({})'.format(df.iloc[i, 1]), horizontalalignment='left', verticalalignment='center')
     if len(df2.index) != 0:
         x = df2.iloc[:, 0]
         y = df2['original_index']
@@ -54,19 +62,19 @@ def dot_pair_plot(df, title, first_label, second_label):
                  markersize=7,
                  fillstyle='full')
 
-    x = df.iloc[:, 0]
+    x = df.iloc[:, 1]
     y = df.index
     plt.plot(x, y,
-             color='#65C2A5',
+             color=color_one,
              linestyle='None',
              marker='o',
              markersize=7,
              fillstyle='full')
 
-    x = df.iloc[:, 1]
+    x = df.iloc[:, 0]
     y = df.index
     plt.plot(x, y,
-             color='#FC8D62',
+             color=color_two,
              linestyle='None',
              marker='o',
              markersize=7,
@@ -86,11 +94,11 @@ def dot_pair_plot(df, title, first_label, second_label):
              weight='bold')
     plt.text(-45, 11, first_label,
              horizontalalignment='left',
-             color='#FC8D62',
+             color=color_one,
              size=14)
     plt.text(60, 11, second_label,
              horizontalalignment='left',
-             color='#65C2A5',
+             color=color_two,
              size=14)
 
     return fig
@@ -102,11 +110,14 @@ def save_figure(fig, output_dir, filename, pad_inches=0.3):
                 pad_inches=pad_inches)
 
 if __name__ == '__main__':
+    # Example:
+    # https://aflcio.org/paywatch/highest-paid-ceos
+    # https://aflcio.org/paywatch/company-pay-ratios
     df = pd.read_csv('/home/rincon/Desktop/data.csv', header=None)
     output_dir = make_output_dir('/home/rincon/Desktop/data_dir')
     fig = dot_pair_plot(df,
-      'Annual Company Revenue and CEO Compensation',
-      'Company revenue in billions $',
-      'CEO pay in millions $'
+      'Annual CEO Compensation and Median Worker Pay',
+      'CEO pay in millions $',
+      'Worker pay in thousands $'
     )
-    save_figure(fig, output_dir, 'testerrr.png')
+    save_figure(fig, output_dir, 'test.png')

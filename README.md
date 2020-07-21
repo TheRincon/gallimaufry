@@ -106,13 +106,39 @@ from consumer_reports_plot import cr_plot
 
 cars = ['Toyota Corrola', 'Toyota Camry', 'Toyota Prius']
 years = [2015, 2016, 2017, 2018, 2019, 2020]
-samps = np.array([[0, 0, 5000, 7000, 10000, 12000],
-                [0, 0, 0, 5000, 7000, 10000],
+samps = np.array([[0, 0, 0, 5000, 7000, 10000],
+                [0, 0, 5000, 7000, 9000, 12000],
                 [7000, 9000, 11000, 13000, 15000, 16000]]
-            )
-output_path = 'car_tester.png'
-cr_plot(samps, cars, years, output_path)
+        )
+cr_plot(samps, cars, years, 'car_tester.png', colormap='viridis', title='Used \ car \ price')
 ```
 
 ### Plot:
 ![](output/car_tester.png)
+
+
+## pair_dot_plot.py
+
+Takes dataframe of magnitude normalized numeric data.
+
+### Usage
+
+```python
+
+import pair_dot_plot
+
+# Example:
+# https://aflcio.org/paywatch/highest-paid-ceos
+# https://aflcio.org/paywatch/company-pay-ratios
+df = pd.read_csv('/home/username/data.csv', header=None)
+output_dir = make_output_dir('/home/username/data_dir')
+fig = dot_pair_plot(df,
+  'Annual CEO Compensation and Median Worker Pay',
+  'CEO pay in millions $',
+  'Worker pay in thousands $'
+)
+save_figure(fig, output_dir, 'test.png')
+```
+
+### Plot:
+![](output/test.png)
