@@ -123,22 +123,53 @@ Takes dataframe of magnitude normalized numeric data.
 
 ### Usage
 
+Data Sources:
+[Highest Paid CEOs](https://aflcio.org/paywatch/highest-paid-ceos)
+[Company Worker-to-pay-ratios](https://aflcio.org/paywatch/company-pay-ratios)
+
 ```python
 
-import pair_dot_plot
+import pair_dot_plot as dot
+import pandas as pd
+'''
+data.csv:
+69.6,37.8,PayPal Holdings Inc.,Daniel Schulman
+68.6,35.7,CenturyLink Inc.,Jeffrey Storey
+82.2,35.0,Comcast Corp.,Brian Roberts
+73.4,27.3,Catepillar Inc.,D. Umpleby III
+65.0,22.5,GoDaddy Inc.,Scott Wagner
+'''
 
-# Example:
-# https://aflcio.org/paywatch/highest-paid-ceos
-# https://aflcio.org/paywatch/company-pay-ratios
 df = pd.read_csv('/home/username/data.csv', header=None)
-output_dir = make_output_dir('/home/username/data_dir')
-fig = dot_pair_plot(df,
+output_dir = dot.make_output_dir('/home/username/data_dir')
+fig = dot.dot_pair_plot(df,
   'Annual CEO Compensation and Median Worker Pay',
   'CEO pay in millions $',
   'Worker pay in thousands $'
 )
-save_figure(fig, output_dir, 'test.png')
+dot.save_figure(fig, output_dir, 'test.png')
 ```
 
 ### Plot:
 ![](output/test.png)
+
+## consumer_reports_plot.py
+
+Bar plot with data points overlayed.
+
+[Original source](https://stackoverflow.com/questions/51027717/pyplot-bar-charts-with-individual-data-points/51032760)
+
+### Usage
+
+```python
+
+import bar_and_datapoints_plot as bdp
+bar_width = 0.5
+bar_coordinates = [1, 2]
+colors = ['#FC8D62','#65C2A5']
+data = [np.random.random(30) * 2 + 5, np.random.random(10) * 3 + 8]
+bdp.bar_and_data_plot(bar_coordinates, data, 'bar_points.png', bar_width=bar_width, bar_colors=colors, edge_colors=None)
+```
+
+### Plot:
+![](output/bar_points.png)
