@@ -79,6 +79,27 @@ def horizontal_gradient(height, width, gradient_width_r_range, gradient_width_g_
         w = png.Writer(width, height, greyscale=False)
         w.write(f, img)
 
+def custom_size():
+    pass
+
+def uniform_border_buffer(buffer_in_pixels, color, im, output_path):
+    if buffer_in_pixels <= 0:
+        raise ValueError('Border can not be zero or negative')
+
+    new_width = im.width + (buffer_in_pixels * 2)
+
+    top_border = Image.new('RGB', (new_width, buffer_in_pixels), color)
+    bottom_border = Image.new('RGB', (new_width, buffer_in_pixels), color)
+    left_border = Image.new('RGB', (buffer_in_pixels, im.height), color)
+    right_border = Image.new('RGB', (buffer_in_pixels, im.height), color)
+
+    concat_h(left_border, im, 'tmp_left.png')
+    lefted = Image.open('tmp_left.png')
+    concat_h(lefted, right_border, 'tmp_right.png')
+    righted = Image.open('tmp_right.png')
+    concat_v(bottom_border, righted, 'tmp_bottom.png')
+    bottomed = Image.open('tmp_bottom.png')
+    concat_v(bottomed, top_border, output_path)
 
 # https://note.nkmk.me/en/python-pillow-concat-images/
 def concat_h(im1, im2, output_path):
@@ -92,6 +113,7 @@ def concat_v(im1, im2, output_path):
     dst = Image.new('RGB', (im1.width, im1.height + im2.height))
     dst.paste(im1, (0, 0))
     dst.paste(im2, (0, im1.height))
+    print(output_path)
     dst.save(output_path)
 
 
@@ -136,20 +158,32 @@ if __name__ == '__main__':
                         help='first color in gradient')
     parser.add_argument('-k', dest="second_color", metavar='second_color', type=rgb_tuple,
                         help='second color in gradient')
+    parser.add_argument('-b', dest="border_pixels", metavar='border_pixels', type=int,
+                        help='unifrom border in pixels')
 
     options = parser.parse_args()
 
     mode = options.mode
 
     if mode == 'ch':
-        if options.first_image_path is None or  options.second_image_path is None:
+        if options.first_image_path is None or options.second_image_path is None:
             raise ValueError('Please provide two images to concatenate')
         im1 = Image.open(options.first_image_path)
         im2 = Image.open(options.second_image_path)
         concat_h(im1, im2, options.output_path)
 
+    if mode == 'ub':
+        if options.first_image_path is None:
+            raise ValueError('Please provide an image to concatenate')
+        if options.first_color is None:
+            raise ValueError('Please provide an image to concatenate')
+
+        im_border = Image.open(options.first_image_path)
+        buffer_in_pixels = options.border_pixels
+        uniform_border_buffer(buffer_in_pixels, options.first_color, im_border, options.output_path)
+
     elif mode == 'cv':
-        if options.first_image_path is None or  options.second_image_path is None:
+        if options.first_image_path is None or options.second_image_path is None:
             raise ValueError('Please provide two images to concatenate')
         im1 = Image.open(options.first_image_path)
         im2 = Image.open(options.second_image_path)

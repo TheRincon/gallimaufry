@@ -90,8 +90,18 @@ Concatenate images horizontally:
 ```bash
 python3 colorer.py --mode ch -i output/gradient.png -e output/light_teal.png -o output/concatenated.png --height 400 --width 300
 ```
-
 ![](output/concatenated.png)
+
+Make a solid color border:
+
+```bash
+python3 colorer.py --mode v -c 255,211,0 -k 255,0,107 --height 400 --width 300 -o gradient.png
+python3 colorer.py --mode ub -i output/gradient.png -b 30 -c 255,255,255 -o output_border.png --height 400 --width 300
+```
+![](output/gradient.png)
+
+![](output/output_border.png)
+
 
 ## consumer_reports_plot.py
 
@@ -155,7 +165,7 @@ dot.save_figure(fig, output_dir, 'test.png')
 ### Plot:
 ![](output/test.png)
 
-## consumer_reports_plot.py
+## bar_and_datapoints_plot.py
 
 Bar plot with data points overlayed.
 
