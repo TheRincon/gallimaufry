@@ -113,7 +113,6 @@ def concat_v(im1, im2, output_path):
     dst = Image.new('RGB', (im1.width, im1.height + im2.height))
     dst.paste(im1, (0, 0))
     dst.paste(im2, (0, im1.height))
-    print(output_path)
     dst.save(output_path)
 
 
