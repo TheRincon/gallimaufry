@@ -6,18 +6,14 @@ import os
 © 2018 Aaron Penne
 Taken from https://github.com/aaronpenne/data_visualization
 
-Adapted for general normalized quantity use.
+Assumes the data is already normalized.
 '''
 
 def make_output_dir(output_name):
     output_dir = os.path.realpath(output_name)
     if not os.path.isdir(output_dir):
         os.mkdir(output_dir)
-
-# a_compensation = 0
-# a_revenue = 1
-# ceo = 2
-# comapny = 3
+    return output_dir
 
 def make_new_df(df):
     col_list = df.columns.tolist()
@@ -25,7 +21,7 @@ def make_new_df(df):
     df2['original_index'] = None
     return df2
 
-def dot_pair_plot(df):
+def dot_pair_plot(df, title, first_label, second_label):
     df2 = make_new_df(df)
     fig, ax = plt.subplots(figsize=(8, 6), dpi=150)
     for i in df.index:
@@ -58,10 +54,8 @@ def dot_pair_plot(df):
                  markersize=7,
                  fillstyle='full')
 
-    # Plot revenue
     x = df.iloc[:, 0]
     y = df.index
-    # #C947F5
     plt.plot(x, y,
              color='#65C2A5',
              linestyle='None',
@@ -69,7 +63,6 @@ def dot_pair_plot(df):
              markersize=7,
              fillstyle='full')
 
-    # Plot company
     x = df.iloc[:, 1]
     y = df.index
     plt.plot(x, y,
@@ -87,22 +80,18 @@ def dot_pair_plot(df):
     plt.xticks(range(0,101,10), color='gray')
     ax.set_yticklabels('')
 
-    plt.text(-45, 12, 'Annual Company Revenue and Annual CEO Compensation',
+    plt.text(-45, 12, title,
              horizontalalignment='left',
              size=16,
              weight='bold')
-    plt.text(-45, 11, 'Company revenue is in $Billions.',
+    plt.text(-45, 11, first_label,
              horizontalalignment='left',
              color='#FC8D62',
              size=14)
-    plt.text(60, 11, 'CEO compensation is in $Millions.',
+    plt.text(60, 11, second_label,
              horizontalalignment='left',
              color='#65C2A5',
              size=14)
-    plt.text(-50, -3, 'Example text',
-             horizontalalignment='left',
-             color='gray',
-             size=8)
 
     return fig
 
@@ -114,6 +103,10 @@ def save_figure(fig, output_dir, filename, pad_inches=0.3):
 
 if __name__ == '__main__':
     df = pd.read_csv('/home/rincon/Desktop/data.csv', header=None)
-    make_output_dir('/home/rincon/Desktop/data_dir')
-    fig = dot_pair_plot(df)
-    save_figure(fig, '/home/rincon/Desktop/data_dir', 'testerrr.png') # save_figure(fig, output_name, figname)
+    output_dir = make_output_dir('/home/rincon/Desktop/data_dir')
+    fig = dot_pair_plot(df,
+      'Annual Company Revenue and CEO Compensation',
+      'Company revenue in billions $',
+      'CEO pay in millions $'
+    )
+    save_figure(fig, output_dir, 'testerrr.png')
