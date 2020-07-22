@@ -82,9 +82,31 @@ def horizontal_gradient(height, width, gradient_width_r_range, gradient_width_g_
 def custom_size():
     pass
 
-def uniform_border_buffer(buffer_in_pixels, color, im, output_path):
+def uniform_border_buffer(buffer_in_pixels, im, output_path, color=(0,0,0)):
     if buffer_in_pixels <= 0:
         raise ValueError('Border can not be zero or negative')
+
+    new_width = im.width + (buffer_in_pixels * 2)
+
+    top_border = Image.new('RGB', (new_width, buffer_in_pixels), color)
+    bottom_border = Image.new('RGB', (new_width, buffer_in_pixels), color)
+    left_border = Image.new('RGB', (buffer_in_pixels, im.height), color)
+    right_border = Image.new('RGB', (buffer_in_pixels, im.height), color)
+
+    concat_h(left_border, im, 'tmp_left.png')
+    lefted = Image.open('tmp_left.png')
+    concat_h(lefted, right_border, 'tmp_right.png')
+    righted = Image.open('tmp_right.png')
+    concat_v(bottom_border, righted, 'tmp_bottom.png')
+    bottomed = Image.open('tmp_bottom.png')
+    concat_v(bottomed, top_border, output_path)
+
+def custom_border(width, height, im, output_path, color=(0,0,0)):
+    if width < im.width:
+        raise ValueError('New width is less than original width of {}'.format(im.width))
+
+    if height < im.height:
+        raise ValueError('New width is less than original height of {}'.format(im.height))
 
     new_width = im.width + (buffer_in_pixels * 2)
 
@@ -150,9 +172,9 @@ if __name__ == '__main__':
     parser.add_argument('--mode', dest="mode", metavar='mode',
                         type=str, help="v for vertical gradient, s for solid color, h for horizontal gradient, cv for concatenate vertically, ch for concatenate horizontally", required=True)
     parser.add_argument('--height', metavar='height', type=int,
-                        help='set height of output image', required=True)
+                        help='set height of output image')
     parser.add_argument('--width', metavar='width', type=int,
-                        help='set width of the output image', required=True)
+                        help='set width of the output image')
     parser.add_argument('-c', dest="first_color", metavar='first_color', type=rgb_tuple,
                         help='first color in gradient')
     parser.add_argument('-k', dest="second_color", metavar='second_color', type=rgb_tuple,
@@ -171,15 +193,29 @@ if __name__ == '__main__':
         im2 = Image.open(options.second_image_path)
         concat_h(im1, im2, options.output_path)
 
-    if mode == 'ub':
+    elif mode == 'ub':
         if options.first_image_path is None:
-            raise ValueError('Please provide an image to concatenate')
-        if options.first_color is None:
-            raise ValueError('Please provide an image to concatenate')
+            raise ValueError('Please provide an image to border')
+
+        if options.border_pixels is None:
+            raise ValueError('Please provide a border size to concatenate')
 
         im_border = Image.open(options.first_image_path)
         buffer_in_pixels = options.border_pixels
-        uniform_border_buffer(buffer_in_pixels, options.first_color, im_border, options.output_path)
+        uniform_border_buffer(buffer_in_pixels, im_border, options.output_path, options.first_color)
+
+    elif mode == 'b':
+        if options.first_image_path is None:
+            raise ValueError('Please provide an image to border')
+
+        if options.height is None:
+            raise ValueError('Please provide a new height')
+
+        if options.width is None:
+            raise ValueError('Please provide a width')
+
+        im_border = Image.open(options.first_image_path)
+        custom_border(options.width, options.height, im_border, options.output_path options.first_color)
 
     elif mode == 'cv':
         if options.first_image_path is None or options.second_image_path is None:
@@ -192,6 +228,10 @@ if __name__ == '__main__':
         rainbow_gradient(options.output_path)
 
     elif mode == 'v':
+        if options.first_color is None or options.second_color is None:
+            raise ValueError('Please provide two colors for gradient')
+        if options.height is None or options.width is None:
+            raise ValueError('Please provide two dimensions for image height and width')
         rgb_1 = options.first_color
         rgb_2 = options.second_color
         gradient_r_range = np.linspace(rgb_1[0], rgb_2[0], options.height, dtype = int)
@@ -207,6 +247,10 @@ if __name__ == '__main__':
         )
 
     elif mode == 'h':
+        if options.first_color is None or options.second_color is None:
+            raise ValueError('Please provide two colors for gradient')
+        if options.height is None or options.width is None:
+            raise ValueError('Please provide two dimensions for image height and width')
         rgb_1 = options.first_color
         rgb_2 = options.second_color
         gradient_width_r_range = np.linspace(rgb_1[0], rgb_2[0], options.width, dtype = int)
@@ -222,9 +266,17 @@ if __name__ == '__main__':
         )
 
     elif mode == 's':
+        if options.first_color is None:
+            raise ValueError('Please provide a color')
+        if options.height is None or options.width is None:
+            raise ValueError('Please provide two dimensions for image height and width')
         solid_color(options.height, options.width, options.first_color, options.output_path)
 
     elif mode == 'd':
+        if options.first_color is None or options.second_color is None:
+            raise ValueError('Please provide two colors for gradient')
+        if options.height is None or options.width is None:
+            raise ValueError('Please provide two dimensions for image height and width')
         diagonal_gradient(options.height, options.width, options.first_color, options.second_color, options.output_path)
 
     else:
