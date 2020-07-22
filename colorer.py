@@ -3,7 +3,6 @@ import numpy as np
 from PIL import Image, ImageDraw
 import subprocess
 import argparse
-import matplotlib
 
 img = []
 
@@ -215,7 +214,7 @@ if __name__ == '__main__':
             raise ValueError('Please provide a width')
 
         im_border = Image.open(options.first_image_path)
-        custom_border(options.width, options.height, im_border, options.output_path options.first_color)
+        custom_border(options.width, options.height, im_border, options.output_path, options.first_color)
 
     elif mode == 'cv':
         if options.first_image_path is None or options.second_image_path is None:

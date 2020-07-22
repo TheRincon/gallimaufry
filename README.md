@@ -53,17 +53,19 @@ Modified with primitive, by Rincon Rex </br>
 
 ## colorer.py
 
-Relies on [Pillow](https://github.com/fogleman/primitive)
+Basic image manipulations (joining, bordering, etc.) in Python3.
 
 ### Prerequisites
 
-- [Pillow](https://github.com/fogleman/primitive)
-- PNG python3 package
+Relies on:
+- [Pillow](https://pillow.readthedocs.io)
+- [Pypng](https://pypi.org/project/pypng/)
+- [Numpy](https://numpy.org/)
 
 ### Usage
 
 ```bash
-# mode: v = vertical gradient, h = horizontal gradient, ch = concatenate horizontally, cv = concatenate vertically, s = solid color, r = rainbow gradient
+# mode: v = vertical gradient, h = horizontal gradient, ch = concatenate horizontally, cv = concatenate vertically, s = solid color, r = rainbow gradient, ub = uniform border, b = custom image with dimensions as centered background
 # two colors only needed for gradient modes v and h, input images only needed for concatenation modes ch and cv
 # solid color image needs one color obviously
 python3 colorer.py [--mode] [-i first_input_image] [-e second_input_image] [-o output_image] [--height] [--width] [-c first_color] [-k second_color]
@@ -104,6 +106,9 @@ python3 colorer.py --mode ub -i output/gradient.png -b 30 -c 64,255,183 -o outpu
 ## consumer_reports_plot.py
 
 Small plotter dependent on matplotlib, uses numpy, but can easily be modified. Dataframes will also be available next update. 1 row heatmaps are not super useful, but it's there when needed.
+
+- [Matplotlib](https://matplotlib.org/)
+- [Numpy](https://numpy.org/)
 
 ### Usage
 
@@ -168,6 +173,10 @@ dot.save_figure(fig, output_dir, 'test.png')
 Bar plot with data points overlayed.
 
 [Original source](https://stackoverflow.com/questions/51027717/pyplot-bar-charts-with-individual-data-points/51032760)
+
+Depends on:
+- [Pandas](https://pandas.pydata.org/)
+- [Matplotlib](https://matplotlib.org/)
 
 ### Usage
 

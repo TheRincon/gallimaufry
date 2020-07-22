@@ -1,8 +1,6 @@
-import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import numpy as np
-import seaborn as sns; sns.set() # comment this out for borders on plot
 
 plt.rcParams["axes.grid"] = False
 
