@@ -113,8 +113,8 @@ if __name__ == '__main__':
     # Example:
     # https://aflcio.org/paywatch/highest-paid-ceos
     # https://aflcio.org/paywatch/company-pay-ratios
-    df = pd.read_csv('/home/rincon/Desktop/data.csv', header=None)
-    output_dir = make_output_dir('/home/rincon/Desktop/data_dir')
+    df = pd.read_csv('/home/username/data.csv', header=None)
+    output_dir = make_output_dir('/home/username/data_dir')
     fig = dot_pair_plot(df,
       'Annual CEO Compensation and Median Worker Pay',
       'CEO pay in millions $',
