@@ -26,17 +26,18 @@ def dot_pair_plot(
         title,
         first_label,
         second_label,
-        color_one='#FC8D62',
-        color_two='#65C2A5'
+        colors=['#FC8D62', '#65C2A5', '#C947F5'],
+        line_color='gray'
     ):
 
     df2 = make_new_df(df)
     fig, ax = plt.subplots(figsize=(8, 6), dpi=150)
     for i in df.index:
+        print(df.iloc[i, 0])
         x = [df.iloc[i, 0], df.iloc[i, 1]]
         y = [i, i]
         plt.plot(x, y,
-                 color='gray',
+                 color=line_color,
                  linestyle='-',
                  linewidth=1)
 
@@ -46,17 +47,21 @@ def dot_pair_plot(
             df2.loc[df.index[i]] = df.iloc[i]
             df2.loc[df.index[i], 'original_index'] = i
             df = df.drop(df.index[[i]])
+            # Index is messed up because it's still looping over df.index
+            # df.reset_index(drop=True, inplace=True)
+            # Move this out of the loop, pre-process it.
         elif x[0] > x[1]:
             plt.text(x[0]+4, y[0], df.iloc[i, 2] + ' ({})'.format(df.iloc[i, 0]), horizontalalignment='left', verticalalignment='center', weight='bold')
             plt.text(x[1]-4, y[1], df.iloc[i, 3] + ' ({})'.format(df.iloc[i, 1]), horizontalalignment='right', verticalalignment='center')
         else:
             plt.text(x[0]-4, y[0], df.iloc[i, 2]  + ' ({})'.format(df.iloc[i, 0]), horizontalalignment='right', verticalalignment='center', weight='bold')
             plt.text(x[1]+4, y[1], df.iloc[i, 3]  + ' ({})'.format(df.iloc[i, 1]), horizontalalignment='left', verticalalignment='center')
+
     if len(df2.index) != 0:
         x = df2.iloc[:, 0]
         y = df2['original_index']
         plt.plot(x, y,
-                 color='#C947F5',
+                 color=colors[2],
                  linestyle='None',
                  marker='o',
                  markersize=7,
@@ -65,7 +70,7 @@ def dot_pair_plot(
     x = df.iloc[:, 1]
     y = df.index
     plt.plot(x, y,
-             color=color_one,
+             color=colors[0],
              linestyle='None',
              marker='o',
              markersize=7,
@@ -74,7 +79,7 @@ def dot_pair_plot(
     x = df.iloc[:, 0]
     y = df.index
     plt.plot(x, y,
-             color=color_two,
+             color=colors[1],
              linestyle='None',
              marker='o',
              markersize=7,
@@ -94,11 +99,11 @@ def dot_pair_plot(
              weight='bold')
     plt.text(-45, 11, first_label,
              horizontalalignment='left',
-             color=color_one,
+             color=colors[0],
              size=14)
     plt.text(60, 11, second_label,
              horizontalalignment='left',
-             color=color_two,
+             color=colors[1],
              size=14)
 
     return fig
@@ -113,11 +118,11 @@ if __name__ == '__main__':
     # Example:
     # https://aflcio.org/paywatch/highest-paid-ceos
     # https://aflcio.org/paywatch/company-pay-ratios
-    df = pd.read_csv('/home/username/data.csv', header=None)
-    output_dir = make_output_dir('/home/username/data_dir')
+    df = pd.read_csv('/home/rincon/Desktop/data.csv', header=None)
+    output_dir = make_output_dir('/home/rincon/Desktop/data_dir')
     fig = dot_pair_plot(df,
       'Annual CEO Compensation and Median Worker Pay',
       'CEO pay in millions $',
       'Worker pay in thousands $'
     )
-    save_figure(fig, output_dir, 'test.png')
+    save_figure(fig, output_dir, 'test.png', colors=['#FF00FF', '#40E0D0', '#FFDF00 '])
