@@ -15,12 +15,6 @@ def make_output_dir(output_name):
         os.mkdir(output_dir)
     return output_dir
 
-def make_new_df(df):
-    col_list = df.columns.tolist()
-    df2 = pd.DataFrame(columns = col_list)
-    df2['original_index'] = None
-    return df2
-
 def dot_pair_plot(
         df,
         title,
@@ -29,11 +23,8 @@ def dot_pair_plot(
         colors=['#FC8D62', '#65C2A5', '#C947F5'],
         line_color='gray'
     ):
-
-    df2 = make_new_df(df)
     fig, ax = plt.subplots(figsize=(8, 6), dpi=150)
     for i in df.index:
-        print(df.iloc[i, 0])
         x = [df.iloc[i, 0], df.iloc[i, 1]]
         y = [i, i]
         plt.plot(x, y,
@@ -44,46 +35,17 @@ def dot_pair_plot(
         if (abs(x[0] - x[1]) < 1.0):
             plt.text(x[0]+4, y[0], df.iloc[i, 2] + ' ({})'.format(df.iloc[i, 0]), horizontalalignment='left', verticalalignment='center', weight='bold')
             plt.text(x[1]-4, y[1], df.iloc[i, 3] + ' ({})'.format(df.iloc[i, 1]), horizontalalignment='right', verticalalignment='center')
-            df2.loc[df.index[i]] = df.iloc[i]
-            df2.loc[df.index[i], 'original_index'] = i
-            df = df.drop(df.index[[i]])
-            # Index is messed up because it's still looping over df.index
-            # df.reset_index(drop=True, inplace=True)
-            # Move this out of the loop, pre-process it.
+            plot_point(plt, df.iloc[i, 0], i, colors[2])
         elif x[0] > x[1]:
             plt.text(x[0]+4, y[0], df.iloc[i, 2] + ' ({})'.format(df.iloc[i, 0]), horizontalalignment='left', verticalalignment='center', weight='bold')
             plt.text(x[1]-4, y[1], df.iloc[i, 3] + ' ({})'.format(df.iloc[i, 1]), horizontalalignment='right', verticalalignment='center')
+            plot_point(plt, df.iloc[i, 0], i, colors[0])
+            plot_point(plt, df.iloc[i, 1], i, colors[1])
         else:
             plt.text(x[0]-4, y[0], df.iloc[i, 2]  + ' ({})'.format(df.iloc[i, 0]), horizontalalignment='right', verticalalignment='center', weight='bold')
             plt.text(x[1]+4, y[1], df.iloc[i, 3]  + ' ({})'.format(df.iloc[i, 1]), horizontalalignment='left', verticalalignment='center')
-
-    if len(df2.index) != 0:
-        x = df2.iloc[:, 0]
-        y = df2['original_index']
-        plt.plot(x, y,
-                 color=colors[2],
-                 linestyle='None',
-                 marker='o',
-                 markersize=7,
-                 fillstyle='full')
-
-    x = df.iloc[:, 1]
-    y = df.index
-    plt.plot(x, y,
-             color=colors[0],
-             linestyle='None',
-             marker='o',
-             markersize=7,
-             fillstyle='full')
-
-    x = df.iloc[:, 0]
-    y = df.index
-    plt.plot(x, y,
-             color=colors[1],
-             linestyle='None',
-             marker='o',
-             markersize=7,
-             fillstyle='full')
+            plot_point(plt, df.iloc[i, 0], i, colors[0])
+            plot_point(plt, df.iloc[i, 1], i, colors[1])
 
     for side in ['right', 'left', 'top', 'bottom']:
         ax.spines[side].set_visible(False)
@@ -108,6 +70,14 @@ def dot_pair_plot(
 
     return fig
 
+def plot_point(plt, x, index, color):
+    plt.plot(x, index,
+             color=color,
+             linestyle='None',
+             marker='o',
+             markersize=7,
+             fillstyle='full')
+
 def save_figure(fig, output_dir, filename, pad_inches=0.3):
     fig.savefig(os.path.join(output_dir, filename),
                 dpi=fig.dpi,
@@ -118,11 +88,12 @@ if __name__ == '__main__':
     # Example:
     # https://aflcio.org/paywatch/highest-paid-ceos
     # https://aflcio.org/paywatch/company-pay-ratios
-    df = pd.read_csv('/home/rincon/Desktop/data.csv', header=None)
+    df = pd.read_csv('/home/rincon/Desktop/data.csv')
     output_dir = make_output_dir('/home/rincon/Desktop/data_dir')
     fig = dot_pair_plot(df,
       'Annual CEO Compensation and Median Worker Pay',
       'CEO pay in millions $',
-      'Worker pay in thousands $'
+      'Worker pay in thousands $',
+      colors=['#FF00FF', '#40E0D0', '#FFDF00']
     )
-    save_figure(fig, output_dir, 'test.png', colors=['#FF00FF', '#40E0D0', '#FFDF00 '])
+    save_figure(fig, output_dir, 'test.png')
