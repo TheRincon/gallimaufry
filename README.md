@@ -148,19 +148,26 @@ import pair_dot_plot as dot
 import pandas as pd
 '''
 data.csv:
-69.6,37.8,PayPal Holdings Inc.,Daniel Schulman
-68.6,35.7,CenturyLink Inc.,Jeffrey Storey
+Median Worker Salary,CEO Salary,Entity,CEO
 82.2,35.0,Comcast Corp.,Brian Roberts
-73.4,27.3,Catepillar Inc.,D. Umpleby III
-65.0,22.5,GoDaddy Inc.,Scott Wagner
+73.4,27.3,Catepillar Inc.,D. James Umpleby III
+69.6,37.8,PayPal Holdings Inc.,Daniel Schulman
+43.7,21.4,Hilton Worldwide,Christopher Nassetta
+22.5,22.1,Walmart Inc.,C. McMillon
+42.7,43.3,Kraft Heinz Company,Miguel Patricio
+11.1,12.4,Gamestop Corp.,George Sherman
+1.8,4.6,Universal Corp.,George Freeman III
+2.0,8.4,A&F Co. (ANF),Fran Horowitz
+5.5,15.5, Mattel Inc.,Ynon Kreiz
 '''
 
 df = pd.read_csv('/home/username/data.csv', header=None)
 output_dir = dot.make_output_dir('/home/username/data_dir')
 fig = dot.dot_pair_plot(df,
   'Annual CEO Compensation and Median Worker Pay',
-  'CEO pay in millions $',
-  'Worker pay in thousands $'
+  'Total CEO pay in millions $',
+  'Median Worker pay in thousands $',
+  colors=['#AFF8DB', '#FF9CEE', '#FDCF76']
 )
 dot.save_figure(fig, output_dir, 'test.png')
 ```
@@ -199,3 +206,51 @@ bdp.bar_and_data_plot(
 
 ### Plot:
 ![](output/bar_points.png)
+
+
+## ding_an_sich_plot.py
+
+Nested bar graph.
+
+Depends on:
+- [Pandas](https://pandas.pydata.org/)
+- [Matplotlib](https://matplotlib.org/)
+
+### Usage
+
+```python
+import ding_an_sich_plot as das
+
+data = [
+    ['bananas', 'fruits', 10, '#FFE135'],
+    ['oranges', 'fruits', 15, '#FFA500'],
+    ['tomatoes', 'vegetables', 14, '#FF6347'],
+    ['onions', 'vegetables', 11, '#CFB59B'],
+    ['cucumbers', 'vegetables', 8, '#284400'],
+    ['meat', 'meat', 15, '#000000'],
+    ['cod', 'fish', 12, '#008866'],
+    ['sole', 'fish', 11, '#D38866'],
+    ['tilapia', 'fish', 14, '#008833'],
+    ['snapper', 'fish', 13, '#008833'],
+    ['chicken', 'eggs', 2, '#557766'],
+    ['lizard', 'eggs', 1, '#338866'],
+    ['snake', 'eggs', 4, '#003233'],
+    ['fish', 'eggs', 3, '#008888'],
+    ['platypus', 'eggs', 7, '#001234'],
+    ['snapper', 'test', 8, '#008833'],
+    ['chicken', 'test', 9, '#557766'],
+    ['lizard', 'test', 6, '#338866'],
+    ['snake', 'test', 7, '#003233'],
+    ['fish', 'test', 8, '#008888'],
+    ['platypus', 'test', 8, '#001234'],
+    ['octaves', 'test', 8, '#002222'],
+    ['plagues', 'test', 8, '#005234']
+]
+
+df = pd.DataFrame(data, columns = ['Label', 'Category', 'Amount', 'Color'])
+plotted = das.ding_an_sich_plot(df)
+das.save_figure(p, '/home/username/output_dir', 'nested.png')
+```
+
+### Plot:
+![](output/nested.png)

@@ -19,21 +19,4 @@ def bar_and_data_plot(x, y, output_path, tick_labels, bar_width=0.5, bar_colors=
     for i in range(len(x)):
         ax.scatter(x[i] + np.random.random(y[i].size) * bar_width - bar_width / 2, y[i], color='black', zorder=99)
 
-    # plt.show()
     plt.savefig(output_path)
-
-if __name__ == '__main__':
-    bar_width = 0.5
-    bar_coordinates = [1, 2]
-    colors = ['#FC8D62','#65C2A5']
-    tick_labels = ["control", "test"]
-    data = [np.random.random(30) * 2 + 5, np.random.random(10) * 3 + 8]
-    bar_and_data_plot(
-        bar_coordinates,
-        data,
-        'bar_points.png',
-        tick_labels= tick_labels,
-        bar_width=bar_width,
-        bar_colors=colors,
-        edge_colors=None
-    )

@@ -65,12 +65,3 @@ def yaxis_coords(number_of_subplots):
     first = -0.07 - (0.01 * number_of_subplots)
     second = 0.55 - (0.1 * number_of_subplots)
     return (first, second)
-
-if __name__ == "__main__":
-    cars = ['Toyota Corrola', 'Toyota Camry', 'Toyota Prius']
-    years = [2015, 2016, 2017, 2018, 2019, 2020]
-    samps = np.array([[0, 0, 0, 5000, 7000, 10000],
-                    [0, 0, 5000, 7000, 9000, 12000],
-                    [7000, 9000, 11000, 13000, 15000, 16000]]
-            )
-    cr_plot(samps, cars, years, 'car_tester.png', colormap='viridis', title='Used \ car \ price')

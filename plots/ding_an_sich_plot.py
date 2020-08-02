@@ -1,7 +1,22 @@
 import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
 import math
+import os
+import matplotlib as mpl
+mpl.rcParams['figure.dpi'] = 300
+
+# https://stackoverflow.com/questions/3899980/how-to-change-the-font-size-on-a-matplotlib-plot
+SMALL_SIZE = 6
+MEDIUM_SIZE = 10
+BIGGER_SIZE = 12
+
+plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
+plt.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
+plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
+plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
+plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 
 def mirror_numbers_graphing(n, factor, mid, width):
     # https://stackoverflow.com/questions/38130895/find-middle-of-a-list/38131003
@@ -26,9 +41,7 @@ def mirror_numbers_graphing(n, factor, mid, width):
             acc += 1
         return fudge_array_minus[::-1] + fudge_array_plus
 
-# Ding an sich graph
 # https://stackoverflow.com/questions/8047152/how-do-you-create-a-nested-bar-graph
-
 def ding_an_sich_plot(df, width=0.9):
 
     list_columns = df.columns.tolist()
@@ -65,39 +78,14 @@ def ding_an_sich_plot(df, width=0.9):
 
     plt.xticks(graph_locs, graph_labs, rotation=90)
 
-    plt.show()
+    return plt
 
 def subplot_locations(fudge_factor, index, cat_len, width):
     y = mirror_numbers_graphing(cat_len, fudge_factor, index, width)
     return [x for x in y]
 
-if __name__ == '__main__':
-
-    data = [
-        ['bananas', 'fruits', 10, '#FFE135'],
-        ['oranges', 'fruits', 15, '#FFA500'],
-        ['tomatoes', 'vegetables', 14, '#FF6347'],
-        ['onions', 'vegetables', 11, '#CFB59B'],
-        ['cucumbers', 'vegetables', 8, '#284400'],
-        ['meat', 'meat', 15, '#000000'],
-        ['cod', 'fish', 12, '#008866'],
-        ['sole', 'fish', 11, '#D38866'],
-        ['tilapia', 'fish', 14, '#008833'],
-        ['snapper', 'fish', 13, '#008833'],
-        ['chicken', 'eggs', 2, '#557766'],
-        ['lizard', 'eggs', 1, '#338866'],
-        ['snake', 'eggs', 4, '#003233'],
-        ['fish', 'eggs', 3, '#008888'],
-        ['platypus', 'eggs', 7, '#001234'],
-        ['snapper', 'test', 8, '#008833'],
-        ['chicken', 'test', 9, '#557766'],
-        ['lizard', 'test', 6, '#338866'],
-        ['snake', 'test', 7, '#003233'],
-        ['fish', 'test', 8, '#008888'],
-        ['platypus', 'test', 8, '#001234'],
-        ['octaves', 'test', 8, '#002222'],
-        ['plagues', 'test', 8, '#005234']
-    ]
-
-    df = pd.DataFrame(data, columns = ['Label', 'Category', 'Amount', 'Color'])
-    ding_an_sich_plot(df)
+def save_figure(fig, output_dir, filename, pad_inches=0.3):
+    fig.savefig(os.path.join(output_dir, filename),
+                # dpi=fig.dpi,
+                bbox_inches='tight',
+                pad_inches=pad_inches)
