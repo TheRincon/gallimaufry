@@ -249,7 +249,7 @@ data = [
 
 df = pd.DataFrame(data, columns = ['Label', 'Category', 'Amount', 'Color'])
 plotted = das.ding_an_sich_plot(df)
-das.save_figure(p, '/home/username/output_dir', 'nested.png')
+das.save_figure(plotted, '/home/username/output_dir', 'nested.png')
 ```
 
 ### Plot:
