@@ -254,3 +254,8 @@ das.save_figure(p, '/home/username/output_dir', 'nested.png')
 
 ### Plot:
 ![](output/nested.png)
+
+
+### Examples:
+
+![](output/Bird_Diets.png)
