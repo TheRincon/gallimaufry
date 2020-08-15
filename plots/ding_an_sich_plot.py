@@ -4,6 +4,7 @@ import math
 import os
 import matplotlib as mpl
 mpl.rcParams['figure.dpi'] = 300
+plt.rc_context({'ytick.color':'gray'})
 
 # https://stackoverflow.com/questions/3899980/how-to-change-the-font-size-on-a-matplotlib-plot
 SMALL_SIZE = 6
@@ -42,7 +43,7 @@ def mirror_numbers_graphing(n, factor, mid, width):
         return fudge_array_minus[::-1] + fudge_array_plus
 
 # https://stackoverflow.com/questions/8047152/how-do-you-create-a-nested-bar-graph
-def ding_an_sich_plot(df, width=0.9):
+def ding_an_sich_plot(df, width=0.9, color='#D3D3D3', xlabel='', ylabel='', title=''):
 
     list_columns = df.columns.tolist()
     labels = list(df.groupby(['Label']).groups.keys())
@@ -52,17 +53,17 @@ def ding_an_sich_plot(df, width=0.9):
     xlocs = [i for i in indices]
 
     plt.bar(indices, category_sums['Amount'].tolist(), width=width,
-            color='#D3D3D3', label='Category Sums')
+            color=color, label='Category Sums', zorder=50)
 
     for i, x in category_sums.iterrows():
-        plt.text(xlocs[i] - 0.25, x['Amount'] + 1, x['Category'])
+        plt.text(xlocs[i] - 0.45, x['Amount'] + 5, x['Category'], wrap=True)
 
     graph_locs = []
     graph_labs = []
 
     for ind in indices:
         label = category_labels[ind]
-        label_locs = df.loc[df.Category == label].sort_values(by=['Amount'])
+        label_locs = df.loc[df.Category == label].sort_values(by=['Amount'], ascending=False)
         cat_len = len(label_locs)
         locs = subplot_locations(1 / (cat_len * 2), ind, cat_len, width)
         graph_locs.extend(locs)
@@ -72,11 +73,17 @@ def ding_an_sich_plot(df, width=0.9):
             label_locs['Amount'].tolist(),
             width=(1 / cat_len) * width,
             color=label_locs['Color'].tolist(),
-            alpha=0.9,
+            alpha=1.0,
+            zorder=99,
             tick_label=label_locs['Label'].tolist()
         )
 
+    plt.ylabel(ylabel, fontsize=12)
+    plt.title(title, fontsize=20)
     plt.xticks(graph_locs, graph_labs, rotation=90)
+    plt.box(False)
+    axes = plt.gca()
+    axes.yaxis.grid(alpha=0.5, zorder=0)
 
     return plt
 
