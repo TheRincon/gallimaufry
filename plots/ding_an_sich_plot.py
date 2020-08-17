@@ -43,7 +43,7 @@ def mirror_numbers_graphing(n, factor, mid, width):
         return fudge_array_minus[::-1] + fudge_array_plus
 
 # https://stackoverflow.com/questions/8047152/how-do-you-create-a-nested-bar-graph
-def ding_an_sich_plot(df, width=0.9, color='#D3D3D3', xlabel='', ylabel='', title=''):
+def ding_an_sich_plot(df, width=0.9, color='#D3D3D3', xlabel='', ylabel='', title='', pad_height=5):
 
     list_columns = df.columns.tolist()
     labels = list(df.groupby(['Label']).groups.keys())
@@ -56,7 +56,7 @@ def ding_an_sich_plot(df, width=0.9, color='#D3D3D3', xlabel='', ylabel='', titl
             color=color, label='Category Sums', zorder=50)
 
     for i, x in category_sums.iterrows():
-        plt.text(xlocs[i] - 0.45, x['Amount'] + 5, x['Category'], wrap=True)
+        plt.text(xlocs[i] - 0.45, x['Amount'] + pad_height, x['Category'], wrap=True)
 
     graph_locs = []
     graph_labs = []
@@ -80,7 +80,7 @@ def ding_an_sich_plot(df, width=0.9, color='#D3D3D3', xlabel='', ylabel='', titl
 
     plt.ylabel(ylabel, fontsize=12)
     plt.title(title, fontsize=20)
-    plt.xticks(graph_locs, graph_labs, rotation=90)
+    plt.xticks(graph_locs, graph_labs, rotation=45, ha="right")
     plt.box(False)
     axes = plt.gca()
     axes.yaxis.grid(alpha=0.5, zorder=0)
@@ -96,3 +96,4 @@ def save_figure(fig, output_dir, filename, pad_inches=0.3):
                 # dpi=fig.dpi,
                 bbox_inches='tight',
                 pad_inches=pad_inches)
+    plt.clf()
