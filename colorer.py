@@ -30,13 +30,13 @@ def rgb_to_hex(rgbcolor):
     return '#%02x%02x%02x' % (red, green, blue)
 
 
-def resizer(input_path, height, width, output_path):
+def resizer(input_path, height, width, color, output_path):
     old_im = Image.open(input_path)
     old_size = old_im.size
     new_size = (height, width)
-    new_im = Image.new("RGB", new_size)
-    new_im.paste(old_im, ((new_size[0]-old_size[0])/2, (new_size[1]-old_size[1])/2))
-    new_im.save('someimage.jpg')
+    new_im = Image.new("RGB", new_size, color)
+    new_im.paste(old_im, (int((new_size[0]-old_size[0])/2), int((new_size[1]-old_size[1])/2)))
+    new_im.save(output_path)
 
 
 # rainbow gradient
@@ -123,18 +123,24 @@ def custom_border(width, height, im, output_path, color=(0,0,0)):
     concat_v(bottomed, top_border, output_path)
 
 # https://note.nkmk.me/en/python-pillow-concat-images/
-def concat_h(im1, im2, output_path):
+def concat_h(image1, image2, output_path):
+    im1 = Image.open(image1)
+    im2 = Image.open(image2)
     dst = Image.new('RGB', (im1.width + im2.width, im1.height))
     dst.paste(im1, (0, 0))
     dst.paste(im2, (im1.width, 0))
     dst.save(output_path)
+    return dst
 
 
-def concat_v(im1, im2, output_path):
+def concat_v(image1, image2, output_path):
+    im1 = Image.open(image1)
+    im2 = Image.open(image2)
     dst = Image.new('RGB', (im1.width, im1.height + im2.height))
     dst.paste(im1, (0, 0))
     dst.paste(im2, (0, im1.height))
     dst.save(output_path)
+    return dst
 
 
 # Not my own code here
