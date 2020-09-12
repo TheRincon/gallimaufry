@@ -52,8 +52,25 @@ def ding_an_sich_plot(df, width=0.9, color='#D3D3D3', xlabel='', ylabel='', titl
     indices = range(len(df['Category'].unique()))
     xlocs = [i for i in indices]
 
-    plt.bar(indices, category_sums['Amount'].tolist(), width=width,
+    _plot = plt.bar(indices, category_sums['Amount'].tolist(), width=width,
             color=color, label='Category Sums', zorder=50)
+
+    for obj in _plot:
+        current_h = obj.get_height()
+        current_w = obj.get_width()
+        current_y = obj.get_y()
+        pixel_h = obj.get_verts()[2][1] - obj.get_verts()[0][1]
+        pixel_w = obj.get_verts()[2][0] - obj.get_verts()[0][0]
+        print("current position = ", current_y)
+        print("current pixel height = ", pixel_h)
+        print("current pixel width = ", pixel_w)
+        print("verts = ", obj.get_verst())
+
+        # (B) Move the rectangle so it still aligns with labels and error bars
+        y_diff = current_h - h # height is same units as y
+        new_y = current_y + y_diff / 2
+        obj.set_y(new_y)
+        print("now position = ", obj.get_y())
 
     for i, x in category_sums.iterrows():
         plt.text(xlocs[i] - 0.45, x['Amount'] + pad_height, x['Category'], wrap=True)

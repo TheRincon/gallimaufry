@@ -9,6 +9,17 @@ def remove_dups_preserve_order(seq):
     seen_add = seen.add
     return [x for x in seq if not (x in seen or seen_add(x))]
 
+def max_it(K, M, N)
+    # Example:
+    # 3 1000
+    # 2 5 4
+    # 3 7 8 9
+    # 5 5 7 8 9 10 
+    K, M = map(int, input().split(' '))
+    N = (list(map(int, input().split()))[1:] for _ in range(K))
+    r = map(lambda x: sum(i**2 for i in x) % M, itertools.product(*N))
+    print(max(r))
+
 # Invert a binary tree!
 def invertTree(root):
     if root:
@@ -18,7 +29,7 @@ def invertTree(root):
 def combine_lists(A, B):
     return [x for x in itertools.chain.from_iterable(itertools.zip_longest(A, B)) if x]
 
-def split_list_into_list_of_tuples(s):
+def split_list_into_list_of_tuples(s, n):
     return list(itertools.zip_longest(*[iter(s)]*n))
 
 def combine_lists(list1):
